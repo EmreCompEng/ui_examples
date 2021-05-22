@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -31,73 +32,123 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        actions: appBarActions(),
-        title: buildCircleImage(),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildBodyHeader(),
+      key: _drawerKey,
+      appBar: buildAppBar(),
+      drawer: buildDrawer(),
+      body: buildBody(context),
+    );
+  }
 
-            buildCardview(
-                context,
-                Colors.orange,
-                "Design Highway",
-                "Senior for designers\nana design leads",
-                "22.05.2021",
-                "Fethiye",
-                "15",
-                "Emre\nERGÜN"),
-
-            buildCardview(
-                context,
-                Colors.lightBlue,
-                "Ölüdeniz Beach",
-                "Summer beach\nAll coctails",
-                "25.05.2021",
-                "Dalaman",
-                "Free",
-                "Yunus\nERGÜN"),
-
-            buildCardview(
-                context,
-                Colors.lightGreen,
-                "Design Highway",
-                "Senior for designers\nana design leads",
-                "22.05.2021",
-                "Fethiye",
-                "15",
-                "Emre\nERGÜN"),
-
-            buildCardview(
-                context,
-                Colors.purple,
-                "Design Highway",
-                "Senior for designers\nana design leads",
-                "22.05.2021",
-                "Fethiye",
-                "15",
-                "Emre\nERGÜN"),
-
-
-          ],
-        ),
+  SingleChildScrollView buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          buildBodyHeader(),
+          buildCardview(
+              context,
+              Colors.orange,
+              "Design Highway",
+              "Senior for designers\nana design leads",
+              "22.05.2021",
+              "Fethiye",
+              "15",
+              "Emre\nERGÜN"),
+          buildCardview(
+              context,
+              Colors.lightBlue,
+              "Ölüdeniz Beach",
+              "Summer beach\nAll coctails",
+              "25.05.2021",
+              "Dalaman",
+              "Free",
+              "Yunus\nERGÜN"),
+          buildCardview(
+              context,
+              Colors.lightGreen,
+              "Design Highway",
+              "Senior for designers\nana design leads",
+              "22.05.2021",
+              "Fethiye",
+              "15",
+              "Emre\nERGÜN"),
+          buildCardview(
+              context,
+              Colors.purple,
+              "Design Highway",
+              "Senior for designers\nana design leads",
+              "22.05.2021",
+              "Fethiye",
+              "15",
+              "Emre\nERGÜN"),
+        ],
       ),
     );
   }
 
-  Center buildCardview(BuildContext context,MaterialColor materialColor, String header, String subHeader,
-      String date, String location, String price, String cardName) {
+  AppBar buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      leading: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {
+          _drawerKey.currentState
+              ?.openDrawer(); // it wil open drawer menu programaticaly
+        },
+      ),
+      actions: appBarActions(),
+      title: buildCircleImage(40),
+    );
+  }
+
+  Drawer buildDrawer() {
+    return Drawer(
+      // Add a ListView to the drawer. This ensures the user can scroll
+      // through the options in the drawer if there isn't enough vertical
+      // space to fit everything.
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+            ),
+            child: buildCircleImage(100)
+          ),
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              // Update the state of the app.
+              // ...
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Center buildCardview(
+      BuildContext context,
+      MaterialColor materialColor,
+      String header,
+      String subHeader,
+      String date,
+      String location,
+      String price,
+      String cardName) {
     return Center(
       child: Container(
         margin: EdgeInsets.only(top: 10, bottom: 10),
@@ -250,23 +301,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // Circle image
-  ClipRRect buildCircleImage() {
+  ClipRRect buildCircleImage(double size) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(size),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(color: Colors.lightBlue),
+            height: size,
+            width: size,
+            decoration: BoxDecoration(
+              color: Colors.lightBlue,
+              shape: BoxShape.circle
+            ),
           ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(35),
+            borderRadius: BorderRadius.circular(size),
             child: Image.asset(
               'assets/images/emre.png',
-              height: 35,
-              width: 35,
+              height: size*0.95,
+              width: size*0.95,
+              fit: BoxFit.cover,
             ),
           ),
         ],

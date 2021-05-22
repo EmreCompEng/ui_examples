@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ui_examples/ui/main/AnimatedPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,8 +35,19 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
+  // CardView height
+  double _cardHeight = 50;
+  double _cardWidht  = 50;
+
+
   @override
   Widget build(BuildContext context) {
+
+    // CardView height
+    this._cardHeight = MediaQuery.of(context).size.height * 0.40;
+    this._cardWidht =  MediaQuery.of(context).size.width  * 0.90;
+
+
     return Scaffold(
       key: _drawerKey,
       appBar: buildAppBar(),
@@ -52,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           buildCardview(
               context,
               Colors.orange,
+              _cardHeight,
               "Design Highway",
               "Senior for designers\nana design leads",
               "22.05.2021",
@@ -60,25 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
               "Emre\nERGÜN"),
           buildCardview(
               context,
-              Colors.lightBlue,
-              "Ölüdeniz Beach",
-              "Summer beach\nAll coctails",
-              "25.05.2021",
-              "Dalaman",
-              "Free",
-              "Yunus\nERGÜN"),
-          buildCardview(
-              context,
-              Colors.lightGreen,
-              "Design Highway",
-              "Senior for designers\nana design leads",
-              "22.05.2021",
-              "Fethiye",
-              "15",
-              "Emre\nERGÜN"),
-          buildCardview(
-              context,
-              Colors.purple,
+              Colors.blue,
+              _cardHeight,
               "Design Highway",
               "Senior for designers\nana design leads",
               "22.05.2021",
@@ -116,33 +112,46 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blueGrey,
-            ),
-            child: buildCircleImage(100)
-          ),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+              ),
+              child: buildCircleImage(100)),
           ListTile(
-            title: Text('Item 1'),
+            title: Text('Main Screen'),
             onTap: () {
               // Update the state of the app.
               // ...
             },
           ),
           ListTile(
-            title: Text('Item 2'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
+            title: Text('Second Page'),
+            onTap: () {},
           ),
         ],
       ),
     );
   }
 
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AnimatedPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var tween = Tween(begin: begin, end: end);
+        var offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
+  }
+
   Center buildCardview(
       BuildContext context,
       MaterialColor materialColor,
+      double height,
       String header,
       String subHeader,
       String date,
@@ -150,92 +159,97 @@ class _MyHomePageState extends State<MyHomePage> {
       String price,
       String cardName) {
     return Center(
-      child: Container(
-        margin: EdgeInsets.only(top: 10, bottom: 10),
-        height: MediaQuery.of(context).size.height * 0.40,
-        width: MediaQuery.of(context).size.width * 0.9,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.orange,
-            gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [materialColor.shade900, materialColor.shade300])),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 20,
-              left: 20,
-              child: Text(
-                header,
-                style:
-                    GoogleFonts.nunitoSans(fontSize: 40, color: Colors.white),
-              ),
-            ),
-            Positioned(
-              top: 70,
-              left: 20,
-              child: Text(
-                subHeader,
-                style: GoogleFonts.nunitoSans(
-                  fontSize: 20,
-                  color: Colors.white70,
-                  height: 0.9,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 30,
-              left: 20,
-              child: Text(
-                "Location : $location",
-                style: GoogleFonts.nunitoSans(
-                  color: Colors.white70,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 60,
-              left: 20,
-              child: Text(
-                "Date : $date",
-                style: GoogleFonts.nunitoSans(
-                  color: Colors.white70,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                alignment: Alignment.center,
-                height: 70,
-                width: 70,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                    color: materialColor.shade700),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AnimatedPage()));
+        },
+        child: Container(
+          margin: EdgeInsets.only(top: 10, bottom: 10),
+          height: height,
+          width:  _cardWidht,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.orange,
+              gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: [materialColor.shade900, materialColor.shade300])),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 20,
+                left: 20,
                 child: Text(
-                  "\$ $price",
+                  header,
+                  style:
+                      GoogleFonts.nunitoSans(fontSize: 40, color: Colors.white),
+                ),
+              ),
+              Positioned(
+                top: 70,
+                left: 20,
+                child: Text(
+                  subHeader,
+                  style: GoogleFonts.nunitoSans(
+                    fontSize: 20,
+                    color: Colors.white70,
+                    height: 0.9,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 30,
+                left: 20,
+                child: Text(
+                  "Location : $location",
                   style: GoogleFonts.nunitoSans(
                     color: Colors.white70,
                     fontSize: 20,
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 90,
-              right: 20,
-              child: Text(
-                cardName,
-                textAlign: TextAlign.end,
-                style: GoogleFonts.nunitoSans(
-                    color: Colors.white10, fontSize: 70, height: 1),
+              Positioned(
+                bottom: 60,
+                left: 20,
+                child: Text(
+                  "Date : $date",
+                  style: GoogleFonts.nunitoSans(
+                    color: Colors.white70,
+                    fontSize: 20,
+                  ),
+                ),
               ),
-            ),
-          ],
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 70,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(60),
+                      color: materialColor.shade700),
+                  child: Text(
+                    "\$ $price",
+                    style: GoogleFonts.nunitoSans(
+                      color: Colors.white70,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 90,
+                right: 20,
+                child: Text(
+                  cardName,
+                  textAlign: TextAlign.end,
+                  style: GoogleFonts.nunitoSans(
+                      color: Colors.white10, fontSize: 70, height: 1),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -310,17 +324,15 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             height: size,
             width: size,
-            decoration: BoxDecoration(
-              color: Colors.lightBlue,
-              shape: BoxShape.circle
-            ),
+            decoration:
+                BoxDecoration(color: Colors.lightBlue, shape: BoxShape.circle),
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(size),
             child: Image.asset(
               'assets/images/emre.png',
-              height: size*0.95,
-              width: size*0.95,
+              height: size * 0.95,
+              width: size * 0.95,
               fit: BoxFit.cover,
             ),
           ),

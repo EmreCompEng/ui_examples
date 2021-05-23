@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'gradients.dart';
+import 'utilComponents.dart';
 
 class AnimatedCard extends StatefulWidget {
   const AnimatedCard(
@@ -33,7 +33,7 @@ class AnimatedCard extends StatefulWidget {
 
 class _AnimatedCardState extends State<AnimatedCard> {
   double _height = 300;
-  double _widht = 0;
+  double _secreenWidht = 0;
   bool _isClicked = false;
 
   double _priceButtonwidht = 70;
@@ -41,7 +41,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
   @override
   Widget build(BuildContext context) {
     //_height=MediaQuery.of(context).size.height*0.4;
-    _widht = MediaQuery.of(context).size.width * 0.9;
+    _secreenWidht = MediaQuery.of(context).size.width * 0.9;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -63,7 +63,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
           });
         },
         child: AnimatedContainer(
-          width: _widht,
+          width: _secreenWidht,
           height: _height,
           decoration: BoxDecoration(
               color: widget.color,
@@ -87,7 +87,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                               bottomRight: Radius.circular(30)),
                           child: Image.asset(widget.imagePath,
                               height: widget.cardHeight * 0.8,
-                              width: _widht,
+                              width: _secreenWidht,
                               fit: BoxFit.cover),
                         )),
               Positioned(

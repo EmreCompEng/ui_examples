@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ui_examples/ui/main/components/gradients.dart';
-import 'components/animatedContainer.dart';
+import 'package:ui_examples/components/animatedContainer.dart';
+import 'package:ui_examples/components/utilComponents.dart';
+import 'package:ui_examples/ui/fitnesspage.dart';
 
 void main() {
   runApp(MyApp());
@@ -68,8 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
               date: "22.05.2021",
               location: "Fethiye",
               price: "15",
-              userName: "Emre\nERGÜN",imagePath: 'assets/images/foto1.jpg'
-          ),
+              userName: "Emre\nERGÜN",
+              imagePath: 'assets/images/foto1.jpg'),
           AnimatedCard(
               color: Colors.pink,
               cardHeight: _cardHeight,
@@ -79,9 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
               location: "Fethiye",
               price: "15",
               userName: "Emre\nERGÜN",
-              imagePath: 'assets/images/foto2.jpg'
-          ),
-
+              imagePath: 'assets/images/foto2.jpg'),
           AnimatedCard(
               color: Colors.lightGreen,
               cardHeight: _cardHeight,
@@ -91,8 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               location: "Fethiye",
               price: "15",
               userName: "Emre\nERGÜN",
-              imagePath: 'assets/images/foto3.jpg'
-          ),
+              imagePath: 'assets/images/foto3.jpg'),
           AnimatedCard(
               color: Colors.blue,
               cardHeight: _cardHeight,
@@ -102,9 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
               location: "Fethiye",
               price: "15",
               userName: "Emre\nERGÜN",
-              imagePath: "assets/images/foto4.jpg"
-          ),
-
+              imagePath: "assets/images/foto4.jpg"),
         ],
       ),
     );
@@ -122,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       actions: appBarActions(),
-      title: buildCircleImage(40),
+      title: buildCircleImage(40, 'assets/images/emre.png'),
     );
   }
 
@@ -135,43 +131,24 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                gradient:buildLinearGradient(Colors.blueGrey)
-              ),
-              child: buildCircleImage(100)),
+                  color: Colors.blueGrey,
+                  gradient: buildLinearGradient(Colors.blueGrey)),
+              child: buildCircleImage(100, 'assets/images/emre.png')),
           ListTile(
             title: Text('Main Screen'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
+            onTap: () {},
           ),
           ListTile(
-            title: Text('Second Page'),
-            onTap: () {},
+            title: Text('Fitness Page'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SecondPage()));
+            },
           ),
         ],
       ),
     );
   }
-
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MyApp(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var tween = Tween(begin: begin, end: end);
-        var offsetAnimation = animation.drive(tween);
-        return SlideTransition(
-          position: offsetAnimation,
-          child: child,
-        );
-      },
-    );
-  }
-
-
 
   // < Back Professional events
   Container buildBodyHeader() {
@@ -230,32 +207,5 @@ class _MyHomePageState extends State<MyHomePage> {
         width: 10,
       )
     ];
-  }
-
-  // Circle image
-  ClipRRect buildCircleImage(double size) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            height: size,
-            width: size,
-            decoration:
-                BoxDecoration(color: Colors.lightBlue, shape: BoxShape.circle),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(size),
-            child: Image.asset(
-              'assets/images/emre.png',
-              height: size * 0.95,
-              width: size * 0.95,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

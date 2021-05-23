@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ui_examples/ui/main/AnimatedPage.dart';
+import 'package:ui_examples/ui/main/components/gradients.dart';
+import 'components/animatedContainer.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,16 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // CardView height
   double _cardHeight = 50;
-  double _cardWidht  = 50;
-
+  double _cardWidht = 50;
 
   @override
   Widget build(BuildContext context) {
-
     // CardView height
     this._cardHeight = MediaQuery.of(context).size.height * 0.40;
-    this._cardWidht =  MediaQuery.of(context).size.width  * 0.90;
-
+    this._cardWidht = MediaQuery.of(context).size.width * 0.90;
 
     return Scaffold(
       key: _drawerKey,
@@ -59,28 +57,54 @@ class _MyHomePageState extends State<MyHomePage> {
   SingleChildScrollView buildBody(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          buildBodyHeader(),
-          buildCardview(
-              context,
-              Colors.orange,
-              _cardHeight,
-              "Design Highway",
-              "Senior for designers\nana design leads",
-              "22.05.2021",
-              "Fethiye",
-              "15",
-              "Emre\nERGÜN"),
-          buildCardview(
-              context,
-              Colors.blue,
-              _cardHeight,
-              "Design Highway",
-              "Senior for designers\nana design leads",
-              "22.05.2021",
-              "Fethiye",
-              "15",
-              "Emre\nERGÜN"),
+          AnimatedCard(
+              color: Colors.grey,
+              cardHeight: _cardHeight,
+              header: "Buffalo Burger",
+              subheader: "This is dummy subHeader\ndesigned by Emre Ergün",
+              date: "22.05.2021",
+              location: "Fethiye",
+              price: "15",
+              userName: "Emre\nERGÜN",imagePath: 'assets/images/foto1.jpg'
+          ),
+          AnimatedCard(
+              color: Colors.pink,
+              cardHeight: _cardHeight,
+              header: "Design Highway",
+              subheader: "This is dummy subHeader\ndesigned by Emre Ergün",
+              date: "22.05.2021",
+              location: "Fethiye",
+              price: "15",
+              userName: "Emre\nERGÜN",
+              imagePath: 'assets/images/foto2.jpg'
+          ),
+
+          AnimatedCard(
+              color: Colors.lightGreen,
+              cardHeight: _cardHeight,
+              header: "Design Highway",
+              subheader: "This is dummy subHeader\ndesigned by Emre Ergün",
+              date: "22.05.2021",
+              location: "Fethiye",
+              price: "15",
+              userName: "Emre\nERGÜN",
+              imagePath: 'assets/images/foto3.jpg'
+          ),
+          AnimatedCard(
+              color: Colors.blue,
+              cardHeight: _cardHeight,
+              header: "Design Highway",
+              subheader: "This is dummy subHeader\ndesigned by Emre Ergün",
+              date: "22.05.2021",
+              location: "Fethiye",
+              price: "15",
+              userName: "Emre\nERGÜN",
+              imagePath: "assets/images/foto4.jpg"
+          ),
+
         ],
       ),
     );
@@ -88,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   AppBar buildAppBar() {
     return AppBar(
-      elevation: 0,
+      elevation: 1,
       backgroundColor: Colors.white,
       leading: IconButton(
         icon: Icon(Icons.menu),
@@ -104,9 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Drawer buildDrawer() {
     return Drawer(
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the drawer if there isn't enough vertical
-      // space to fit everything.
+      elevation: 5,
       child: ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
@@ -114,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
+                gradient:buildLinearGradient(Colors.blueGrey)
               ),
               child: buildCircleImage(100)),
           ListTile(
@@ -134,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AnimatedPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => MyApp(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, 1.0);
         var end = Offset.zero;
@@ -148,112 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Center buildCardview(
-      BuildContext context,
-      MaterialColor materialColor,
-      double height,
-      String header,
-      String subHeader,
-      String date,
-      String location,
-      String price,
-      String cardName) {
-    return Center(
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AnimatedPage()));
-        },
-        child: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          height: height,
-          width:  _cardWidht,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.orange,
-              gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [materialColor.shade900, materialColor.shade300])),
-          child: Stack(
-            children: [
-              Positioned(
-                top: 20,
-                left: 20,
-                child: Text(
-                  header,
-                  style:
-                      GoogleFonts.nunitoSans(fontSize: 40, color: Colors.white),
-                ),
-              ),
-              Positioned(
-                top: 70,
-                left: 20,
-                child: Text(
-                  subHeader,
-                  style: GoogleFonts.nunitoSans(
-                    fontSize: 20,
-                    color: Colors.white70,
-                    height: 0.9,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 30,
-                left: 20,
-                child: Text(
-                  "Location : $location",
-                  style: GoogleFonts.nunitoSans(
-                    color: Colors.white70,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 60,
-                left: 20,
-                child: Text(
-                  "Date : $date",
-                  style: GoogleFonts.nunitoSans(
-                    color: Colors.white70,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      color: materialColor.shade700),
-                  child: Text(
-                    "\$ $price",
-                    style: GoogleFonts.nunitoSans(
-                      color: Colors.white70,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 90,
-                right: 20,
-                child: Text(
-                  cardName,
-                  textAlign: TextAlign.end,
-                  style: GoogleFonts.nunitoSans(
-                      color: Colors.white10, fontSize: 70, height: 1),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+
 
   // < Back Professional events
   Container buildBodyHeader() {
@@ -295,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "California",
+            "Fethiye",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           IconButton(
